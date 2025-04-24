@@ -1,7 +1,7 @@
 // Mines by Carter Techel
-import java.awt.Color;
+import java.awt.*;
 import java.awt.event.*;
-import javax.swing.Timer;
+import javax.swing.*;
 
 public class Game implements MouseListener, MouseMotionListener, ActionListener {
     //Instance Variables
@@ -11,6 +11,8 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     public Game()
     {
         this.window = new GameView(this);
+
+        window.repaint();
     }
 
     public static void main(String[] args) {
