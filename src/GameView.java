@@ -6,7 +6,7 @@ public class GameView extends JFrame {
     // Instance Variable
     private Game game;
     private Image background;
-    private static final int WINDOW_WIDTH = 1000;
+    private static final int WINDOW_WIDTH = 1500;
     private static final int WINDOW_HEIGHT = 900;
 
 
@@ -25,6 +25,18 @@ public class GameView extends JFrame {
     {
         g.setColor(Color.BLACK);
         g.fillRect(0,0, WINDOW_WIDTH, WINDOW_HEIGHT);
-        g.drawImage(background, 225, 100, 700, 700, this);
+        g.drawImage(background, 600, 75, 750, 750, this);
+
+        g.setColor(Color.MAGENTA);
+        g.fillRect(75, 625, 450, 150);
+
+        g.setColor(Color.BLACK);
+        g.setFont(new Font("Serif", Font.BOLD, 80));
+        g.drawString("START", 165, 725);
+
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Serif", Font.BOLD, 120));
+        g.drawString("MINES", 100, 175);
+
     }
 }
