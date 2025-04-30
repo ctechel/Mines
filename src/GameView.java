@@ -38,5 +38,15 @@ public class GameView extends JFrame {
         g.setFont(new Font("Serif", Font.BOLD, 120));
         g.drawString("MINES", 100, 175);
 
+        for (int i = 0; i < game.getBoard().length; i++)
+        {
+            for (int j = 0; j < game.getBoard()[0].length; j++)
+            {
+                if (game.getBoard()[i][j].getIsClicked())
+                {
+                    game.getBoard()[i][j].draw(g);
+                }
+            }
+        }
     }
 }

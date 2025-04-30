@@ -7,42 +7,106 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     //Instance Variables
     private GameView window;
     private Square[][] board;
-    private boolean startRound;
+    private boolean gameOver;
+    private int rows;
+    private int cols;
+    private int totalMines;
+    private int sqauresLeft;
+    private double multiplier;
 
-    public Game()
+    public Game(int rows, int cols, int totalMines)
     {
         this.window = new GameView(this);
-        board = new Square[5][5];
-        startRound = false;
+        board = new Square[rows][cols];
+        this.rows = rows;
+        this.cols = cols;
+        this.totalMines = totalMines;
+        this.sqauresLeft = rows * cols;
+        this.multiplier = 1.0;
+        gameOver = false;
 
         makeGrid();
-        runGame();
         window.repaint();
     }
 
     public void makeGrid()
     {
-        int row = (int) Math.random() * 5;
-        int col = (int) Math.random() * 5;
         for (int i = 0; i < board.length; i++)
         {
             for (int j = 0; j < board[0].length; j++)
             {
-                if (i == row && j == col)
-                {
-                    board[i][j] = new Square(true, i, j, window);
-                }
-                else
-                {
-                    board[i][j] = new Square(false, i , j, window);
-                }
+                board[i][j] = new Square(i, j, window);
             }
+        }
+        placeMines(totalMines);
+    }
+
+    public void placeMines(int mines)
+    {
+        int minesLeft = mines;
+        while (minesLeft != 0)
+        {
+            int row = (int) (Math.random() * 5);
+            int col = (int) (Math.random() * 5);
+            board[row][col].makeMine();
+            minesLeft--;
         }
     }
 
-    public void runGame()
-    {
+    public Square[][] getBoard() {
+        return board;
+    }
 
+    public void setBoard(Square[][] board) {
+        this.board = board;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public int getRows() {
+        return rows;
+    }
+
+    public void setRows(int rows) {
+        this.rows = rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public void setCols(int cols) {
+        this.cols = cols;
+    }
+
+    public int getTotalMines() {
+        return totalMines;
+    }
+
+    public void setTotalMines(int totalMines) {
+        this.totalMines = totalMines;
+    }
+
+    public int getSqauresLeft() {
+        return sqauresLeft;
+    }
+
+    public void setSqauresLeft(int sqauresLeft) {
+        this.sqauresLeft = sqauresLeft;
+    }
+
+    public double getMultiplier() {
+        return multiplier;
+    }
+
+    public void setMultiplier(double multiplier) {
+        this.multiplier = multiplier;
     }
 
     @Override
@@ -86,6 +150,6 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     }
 
     public static void main(String[] args) {
-        Game game = new Game();
+        Game game = new Game(5, 5, 1);
     }
 }
