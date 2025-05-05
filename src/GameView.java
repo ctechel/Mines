@@ -38,6 +38,16 @@ public class GameView extends JFrame {
         g.setFont(new Font("Serif", Font.BOLD, 120));
         g.drawString("MINES", 100, 175);
 
+        g.setColor(new Color(50, 205, 50));
+        g.fillRect(125, 500, 100, 100);
+        g.fillRect(250, 500, 100, 100);
+        g.fillRect(375, 500, 100, 100);
+
+        g.setColor(Color.BLACK);
+        g.drawString("1", 145, 590);
+        g.drawString("2", 270, 590);
+        g.drawString("3", 397, 590);
+
         for (int i = 0; i < game.getBoard().length; i++)
         {
             for (int j = 0; j < game.getBoard()[0].length; j++)
