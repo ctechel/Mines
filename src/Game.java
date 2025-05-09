@@ -3,7 +3,8 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 
-public class Game implements MouseListener, MouseMotionListener, ActionListener {
+public class Game implements MouseListener, MouseMotionListener
+{
     //Instance Variables
     private GameView window;
     private Square[][] board;
@@ -13,8 +14,8 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     private int cols;
     private int totalMines;
     private int squaresLeft;
-    private double multiplier;
 
+    // Constructor
     public Game(int rows, int cols)
     {
         this.window = new GameView(this);
@@ -22,8 +23,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.rows = rows;
         this.cols = cols;
         this.totalMines = 1;
-        this.squaresLeft = rows * cols;
-        this.multiplier = 1.0;
+        this.squaresLeft = rows * cols - totalMines;
         gameOver = true;
         gameWon = false;
 
@@ -33,6 +33,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.window.addMouseMotionListener(this);
     }
 
+    // make the grid of squares
     public void makeGrid()
     {
         for (int i = 0; i < board.length; i++)
@@ -42,9 +43,11 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
                 board[i][j] = new Square(i, j, window);
             }
         }
+        // place however many mines there are on the board
         placeMines(totalMines);
     }
 
+    // randomly place the mines somewhere on the board
     public void placeMines(int mines)
     {
         int minesLeft = mines;
@@ -60,6 +63,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         }
     }
 
+    // Getters and Setters
     public Square[][] getBoard() {
         return board;
     }
@@ -104,14 +108,6 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.squaresLeft = squaresLeft;
     }
 
-    public double getMultiplier() {
-        return multiplier;
-    }
-
-    public void setMultiplier(double multiplier) {
-        this.multiplier = multiplier;
-    }
-
     public boolean isGameWon() {
         return gameWon;
     }
@@ -120,15 +116,12 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.gameWon = gameWon;
     }
 
+    // reset the game once a game is over or someone wins
     private void resetGame() {
         gameOver = false;
-        squaresLeft = rows * cols;
+        gameWon = false;
+        squaresLeft = rows * cols - totalMines;
         makeGrid();
-        window.repaint();
-    }
-
-    @Override
-    public void actionPerformed(ActionEvent e) {
         window.repaint();
     }
 
@@ -137,12 +130,13 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
 
     }
 
+    // when the mine is pressed od whatever it clikcs on
     @Override
     public void mousePressed(MouseEvent e) {
         int mouseX = e.getX();
         int mouseY = e.getY();
 
-
+        // change the number of mines in the game
         if (isGameOver()) {
             if (mouseX >= 125 && mouseX <= 225 && mouseY >= 500 && mouseY <= 600) {
                 totalMines = 1;
@@ -161,6 +155,7 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
                 window.repaint();
                 return;
             }
+            // restart game button
             if (mouseX >= 75 && mouseX <= 525 && mouseY >= 625 && mouseY <= 775) {
                 resetGame();
                 window.repaint();
@@ -178,12 +173,17 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
                         square.reveal();
                         squaresLeft--;
                         window.repaint();
-
-                        if (square.isMine()) {
+                        // if the player clicks the last diamond
+                        if (squaresLeft == 0 && !square.isMine())
+                        {
+                            gameWon = true;
+                            gameOver = true;
+                        }
+                        // if the player clicks a mine
+                        if (square.isMine())
+                        {
                             gameOver = true;
                             return;
-                        } else {
-                            multiplier += 0.25;
                         }
 
                         window.repaint();

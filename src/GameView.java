@@ -13,14 +13,13 @@ public class GameView extends JFrame {
     public GameView(Game game)
     {
         this.background = new ImageIcon("resources/Board.png").getImage();
-
         this.game = game;
+
+        // Create game
         this.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         this.setTitle("Mines");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
-
-
     }
 
     public void paint(Graphics g)
@@ -29,27 +28,23 @@ public class GameView extends JFrame {
         g.fillRect(0,0, WINDOW_WIDTH, WINDOW_HEIGHT);
         g.drawImage(background, 600, 75, 750, 750, this);
 
-        g.setColor(Color.MAGENTA);
-        g.fillRect(75, 625, 450, 150);
-
-        g.setColor(Color.BLACK);
-        g.setFont(new Font("Serif", Font.BOLD, 80));
-        g.drawString("START", 165, 725);
-
+        // text for title
         g.setColor(Color.WHITE);
         g.setFont(new Font("Serif", Font.BOLD, 120));
         g.drawString("MINES", 100, 175);
 
+        // instructions
         g.setFont(new Font("Serif", Font.BOLD, 30));
         g.drawString("Click the number of mines you want", 75, 230);
         g.drawString("to play with below. Once you have", 75, 260);
         g.drawString("selected the number of mines you", 75, 290);
         g.drawString("wish to play with click start.", 75, 320);
-        g.drawString("Once you are in game you can't exit", 75, 350);
-        g.drawString("if you click a mine or win click", 75, 380);
+        g.drawString("Once you are in game you can't exit.", 75, 350);
+        g.drawString("If you click a mine or win click", 75, 380);
         g.drawString("start to play again. To win click all", 75, 410);
         g.drawString("the diamonds before clicking a mine.", 75, 440);
 
+        // draw the square every time they are clicked
         for (int i = 0; i < game.getBoard().length; i++)
         {
             for (int j = 0; j < game.getBoard()[0].length; j++)
@@ -61,6 +56,7 @@ public class GameView extends JFrame {
             }
         }
 
+        // draw the buttons where you click the numbers of mines you want
         for (int i = 1; i <= 3; i++)
         {
             int x = 125 + (i - 1) * 125;
@@ -68,6 +64,7 @@ public class GameView extends JFrame {
             int width = 100;
             int height = 100;
 
+            // make the number of mines green and the other 2 white
             if (game.getTotalMines() == i)
             {
                 g.setColor(Color.GREEN);
@@ -84,14 +81,31 @@ public class GameView extends JFrame {
             g.drawString("" + i, x + 20, y + 90);
         }
 
+        // game won screen if they win
         if (game.isGameOver())
         {
             if (game.isGameWon())
             {
                 g.setColor(Color.GREEN);
                 g.setFont(new Font("Serif", Font.BOLD, 120));
-                g.drawString("YOU WIN!", 350, 400);
+                g.drawString("YOU WIN!", 450, 400);
             }
+        }
+
+        // Start/In play button
+        if (game.isGameOver()) {
+            g.setColor(Color.MAGENTA);
+            g.fillRect(75, 625, 450, 150);
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Serif", Font.BOLD, 80));
+            g.drawString("START", 165, 725);
+        }
+        else {
+            g.setColor(Color.WHITE);
+            g.fillRect(75, 625, 450, 150);
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Serif", Font.BOLD, 80));
+            g.drawString("IN PLAY", 145, 725);
         }
     }
 }

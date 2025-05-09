@@ -2,6 +2,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class Square {
+    // Instance Variables
     private boolean isMine;
     private int row;
     private int col;
@@ -15,6 +16,7 @@ public class Square {
     private final int IMAGE_COL_START = 78;
     private final int IMAGE_DIMENSIONS = 147;
 
+    // Constructor
     public Square(int row, int col, GameView window)
     {
         this.isMine = false;
@@ -26,6 +28,7 @@ public class Square {
         this.diamondImage = new ImageIcon("resources/Diamond.png").getImage();
     }
 
+    // Getters and Setters
     public boolean isMine()
     {
         return isMine;
@@ -46,6 +49,7 @@ public class Square {
         this.isMine = true;
     }
 
+    // check if the clicked button contains a square
     public boolean containsPoint(int x, int y) {
         int squareX = row * IMAGE_ROW_CHANGE + IMAGE_ROW_START;
         int squareY = col * IMAGE_COL_CHANGE + IMAGE_COL_START;
@@ -53,6 +57,7 @@ public class Square {
                 y >= squareY && y <= squareY + 147);
     }
 
+    // draw the mines/diamonds
     public void draw(Graphics g)
     {
         if (this.isMine)
