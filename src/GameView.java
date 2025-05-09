@@ -19,6 +19,8 @@ public class GameView extends JFrame {
         this.setTitle("Mines");
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setVisible(true);
+
+
     }
 
     public void paint(Graphics g)
@@ -38,15 +40,15 @@ public class GameView extends JFrame {
         g.setFont(new Font("Serif", Font.BOLD, 120));
         g.drawString("MINES", 100, 175);
 
-        g.setColor(new Color(50, 205, 50));
-        g.fillRect(125, 500, 100, 100);
-        g.fillRect(250, 500, 100, 100);
-        g.fillRect(375, 500, 100, 100);
-
-        g.setColor(Color.BLACK);
-        g.drawString("1", 145, 590);
-        g.drawString("2", 270, 590);
-        g.drawString("3", 397, 590);
+        g.setFont(new Font("Serif", Font.BOLD, 30));
+        g.drawString("Click the number of mines you want", 75, 230);
+        g.drawString("to play with below. Once you have", 75, 260);
+        g.drawString("selected the number of mines you", 75, 290);
+        g.drawString("wish to play with click start.", 75, 320);
+        g.drawString("Once you are in game you can't exit", 75, 350);
+        g.drawString("if you click a mine or win click", 75, 380);
+        g.drawString("start to play again. To win click all", 75, 410);
+        g.drawString("the diamonds before clicking a mine.", 75, 440);
 
         for (int i = 0; i < game.getBoard().length; i++)
         {
@@ -56,6 +58,39 @@ public class GameView extends JFrame {
                 {
                     game.getBoard()[i][j].draw(g);
                 }
+            }
+        }
+
+        for (int i = 1; i <= 3; i++)
+        {
+            int x = 125 + (i - 1) * 125;
+            int y = 500;
+            int width = 100;
+            int height = 100;
+
+            if (game.getTotalMines() == i)
+            {
+                g.setColor(Color.GREEN);
+                g.fillRect(x, y, width, height);
+            }
+            else
+            {
+                g.setColor(Color.WHITE);
+                g.fillRect(x, y, width, height);
+            }
+
+            g.setColor(Color.BLACK);
+            g.setFont(new Font("Serif", Font.BOLD, 120));
+            g.drawString("" + i, x + 20, y + 90);
+        }
+
+        if (game.isGameOver())
+        {
+            if (game.isGameWon())
+            {
+                g.setColor(Color.GREEN);
+                g.setFont(new Font("Serif", Font.BOLD, 120));
+                g.drawString("YOU WIN!", 350, 400);
             }
         }
     }

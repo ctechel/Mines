@@ -10,9 +10,9 @@ public class Square {
     private Image mineImage;
     private Image diamondImage;
     private final int IMAGE_ROW_CHANGE = 150;
-    private final int IMAGE_ROW_START = 600;
+    private final int IMAGE_ROW_START = 602;
     private final int IMAGE_COL_CHANGE = 150;
-    private final int IMAGE_COL_START = 75;
+    private final int IMAGE_COL_START = 78;
     private final int IMAGE_DIMENSIONS = 147;
 
     public Square(int row, int col, GameView window)
@@ -46,9 +46,15 @@ public class Square {
         this.isMine = true;
     }
 
+    public boolean containsPoint(int x, int y) {
+        int squareX = row * IMAGE_ROW_CHANGE + IMAGE_ROW_START;
+        int squareY = col * IMAGE_COL_CHANGE + IMAGE_COL_START;
+        return (x >= squareX && x <= squareX + 147 &&
+                y >= squareY && y <= squareY + 147);
+    }
+
     public void draw(Graphics g)
     {
-
         if (this.isMine)
         {
             g.drawImage(this.mineImage, row * IMAGE_ROW_CHANGE + IMAGE_ROW_START, col * IMAGE_COL_CHANGE + IMAGE_COL_START, IMAGE_DIMENSIONS, IMAGE_DIMENSIONS, window);
@@ -57,6 +63,5 @@ public class Square {
         {
             g.drawImage(this.diamondImage, row * IMAGE_ROW_CHANGE + IMAGE_ROW_START, col * IMAGE_COL_CHANGE + IMAGE_COL_START, IMAGE_DIMENSIONS, IMAGE_DIMENSIONS, window);
         }
-
     }
 }

@@ -8,25 +8,29 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     private GameView window;
     private Square[][] board;
     private boolean gameOver;
+    private boolean gameWon;
     private int rows;
     private int cols;
     private int totalMines;
-    private int sqauresLeft;
+    private int squaresLeft;
     private double multiplier;
 
-    public Game(int rows, int cols, int totalMines)
+    public Game(int rows, int cols)
     {
         this.window = new GameView(this);
         board = new Square[rows][cols];
         this.rows = rows;
         this.cols = cols;
-        this.totalMines = totalMines;
-        this.sqauresLeft = rows * cols;
+        this.totalMines = 1;
+        this.squaresLeft = rows * cols;
         this.multiplier = 1.0;
-        gameOver = false;
+        gameOver = true;
+        gameWon = false;
 
         makeGrid();
-        window.repaint();
+
+        this.window.addMouseListener(this);
+        this.window.addMouseMotionListener(this);
     }
 
     public void makeGrid()
@@ -48,8 +52,11 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         {
             int row = (int) (Math.random() * 5);
             int col = (int) (Math.random() * 5);
-            board[row][col].makeMine();
-            minesLeft--;
+            if (!board[row][col].isMine())
+            {
+                board[row][col].makeMine();
+                minesLeft--;
+            }
         }
     }
 
@@ -63,10 +70,6 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
 
     public boolean isGameOver() {
         return gameOver;
-    }
-
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
     }
 
     public int getRows() {
@@ -93,12 +96,12 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.totalMines = totalMines;
     }
 
-    public int getSqauresLeft() {
-        return sqauresLeft;
+    public int getSquaresLeft() {
+        return squaresLeft;
     }
 
-    public void setSqauresLeft(int sqauresLeft) {
-        this.sqauresLeft = sqauresLeft;
+    public void setSquaresLeft(int squaresLeft) {
+        this.squaresLeft = squaresLeft;
     }
 
     public double getMultiplier() {
@@ -109,9 +112,24 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
         this.multiplier = multiplier;
     }
 
+    public boolean isGameWon() {
+        return gameWon;
+    }
+
+    public void setGameWon(boolean gameWon) {
+        this.gameWon = gameWon;
+    }
+
+    private void resetGame() {
+        gameOver = false;
+        squaresLeft = rows * cols;
+        makeGrid();
+        window.repaint();
+    }
+
     @Override
     public void actionPerformed(ActionEvent e) {
-
+        window.repaint();
     }
 
     @Override
@@ -121,7 +139,60 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
 
     @Override
     public void mousePressed(MouseEvent e) {
+        int mouseX = e.getX();
+        int mouseY = e.getY();
 
+
+        if (isGameOver()) {
+            if (mouseX >= 125 && mouseX <= 225 && mouseY >= 500 && mouseY <= 600) {
+                totalMines = 1;
+                window.repaint();
+                return;
+            }
+
+            if (mouseX >= 250 && mouseX <= 350 && mouseY >= 500 && mouseY <= 600) {
+                totalMines = 2;
+                window.repaint();
+                return;
+            }
+
+            if (mouseX >= 375 && mouseX <= 475 && mouseY >= 500 && mouseY <= 600) {
+                totalMines = 3;
+                window.repaint();
+                return;
+            }
+            if (mouseX >= 75 && mouseX <= 525 && mouseY >= 625 && mouseY <= 775) {
+                resetGame();
+                window.repaint();
+            }
+            return;
+        }
+
+        // Loop through each square to see which was clicked
+        {
+            for (int row = 0; row < board.length; row++) {
+                for (int col = 0; col < board[0].length; col++) {
+                    Square square = board[row][col];
+                    if (!square.getIsClicked() && square.containsPoint(mouseX, mouseY)) {
+                        // Mark the square as revealed
+                        square.reveal();
+                        squaresLeft--;
+                        window.repaint();
+
+                        if (square.isMine()) {
+                            gameOver = true;
+                            return;
+                        } else {
+                            multiplier += 0.25;
+                        }
+
+                        window.repaint();
+                        return;
+                    }
+                }
+            }
+
+        }
     }
 
     @Override
@@ -150,6 +221,6 @@ public class Game implements MouseListener, MouseMotionListener, ActionListener 
     }
 
     public static void main(String[] args) {
-        Game game = new Game(5, 5, 1);
+        Game game = new Game(5, 5);
     }
 }
